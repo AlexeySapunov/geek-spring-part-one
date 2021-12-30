@@ -1,0 +1,62 @@
+package ru.geekbrains.persist;
+
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
+@Repository
+public class ProductRepositoryImpl implements ProductRepository {
+
+    private final Map<Long, Product> productMap = new ConcurrentHashMap<>();
+
+    private final AtomicLong identity = new AtomicLong(0);
+
+    private final Product product = new Product();
+
+    @PostConstruct
+    public void init() {
+        this.save(new Product(1L, "Product 1", new BigDecimal("001.00"), "description1"));
+        this.save(new Product(2L, "Product 2", new BigDecimal("002.00"), "description2"));
+        this.save(new Product(3L, "Product 3", new BigDecimal("003.00"), "description3"));
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return new ArrayList<>(productMap.values());
+    }
+
+    @Override
+    public Optional<Product> findById(long id) {
+        return Optional.ofNullable(productMap.get(id));
+    }
+
+    @Override
+    public void save(Product product) {
+        if (product.getId() == null) {
+            long id = identity.incrementAndGet();
+            product.setId(id);
+        }
+        productMap.put(product.getId(), product);
+    }
+
+    @Override
+    public void delete(long id) {
+        productMap.remove(id);
+    }
+
+    @Override
+    public Product createNewProducts() {
+        Long id = product.getId();
+        String name = product.getName();
+        BigDecimal price = product.getPrice();
+        String description = product.getDescription();
+        return new Product(id, name, price, description);
+    }
+}
