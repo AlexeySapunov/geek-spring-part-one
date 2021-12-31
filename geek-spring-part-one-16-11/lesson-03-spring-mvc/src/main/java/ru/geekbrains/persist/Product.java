@@ -41,5 +41,4 @@ public class Product {
     public String getDescription() {
         return description;
     }
-
 }

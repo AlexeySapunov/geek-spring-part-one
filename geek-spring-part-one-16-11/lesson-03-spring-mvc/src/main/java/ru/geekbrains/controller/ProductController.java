@@ -32,6 +32,13 @@ public class ProductController {
         return "product_form";
     }
 
+    @GetMapping("/new")
+    public String create(Model model) {
+        Product product = new Product();
+        model.addAttribute("product", product);
+        return "product_form";
+    }
+
     @PostMapping
     public String save(Product product) {
         productRepository.save(product);
@@ -43,11 +50,5 @@ public class ProductController {
     public String notFoundExceptionHandler(NotFoundException ex, Model model) {
         model.addAttribute("message", ex.getMessage());
         return "not_found";
-    }
-
-    @GetMapping("/new")
-    public String create(Model model) {
-        model.addAttribute("product", productRepository.createNewProducts());
-        return "product_form";
     }
 }

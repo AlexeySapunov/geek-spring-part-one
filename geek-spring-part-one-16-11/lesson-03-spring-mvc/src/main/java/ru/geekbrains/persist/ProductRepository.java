@@ -12,6 +12,4 @@ public interface ProductRepository {
     void save(Product product);
 
     void delete(long id);
-
-    Product createNewProducts();
 }

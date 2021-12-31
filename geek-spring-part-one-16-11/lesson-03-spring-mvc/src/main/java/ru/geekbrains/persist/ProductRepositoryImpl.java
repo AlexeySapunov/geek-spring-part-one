@@ -18,8 +18,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final AtomicLong identity = new AtomicLong(0);
 
-    private final Product product = new Product();
-
     @PostConstruct
     public void init() {
         this.save(new Product(1L, "Product 1", new BigDecimal("001.00"), "description1"));
@@ -49,14 +47,5 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void delete(long id) {
         productMap.remove(id);
-    }
-
-    @Override
-    public Product createNewProducts() {
-        Long id = product.getId();
-        String name = product.getName();
-        BigDecimal price = product.getPrice();
-        String description = product.getDescription();
-        return new Product(id, name, price, description);
     }
 }
