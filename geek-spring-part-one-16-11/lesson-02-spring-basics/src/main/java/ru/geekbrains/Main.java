@@ -6,6 +6,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 public class Main {
 
@@ -30,7 +31,7 @@ public class Main {
                         "Enter DEL, if you want to delete product from cart\n" +
                         "Enter I AM DONE, if you want to exit");
 
-                choice = reader.readLine();
+                choice = reader.readLine().trim().toUpperCase(Locale.ROOT);
                 long id;
 
                 switch (choice) {
