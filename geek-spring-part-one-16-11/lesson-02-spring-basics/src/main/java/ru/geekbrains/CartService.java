@@ -22,7 +22,7 @@ public class CartService {
         if (!shoppingList.isEmpty()) {
             shoppingList.remove(productRepository.findById(id));
         } else {
-            System.out.println("Cart is empty! Please, add product");
+            throw new IllegalArgumentException("Cart is empty! Please, add product");
         }
     }
 

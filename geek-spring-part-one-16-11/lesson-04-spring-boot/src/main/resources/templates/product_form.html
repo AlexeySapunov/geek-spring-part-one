@@ -39,14 +39,12 @@
                 <input type="hidden" id="id" name="id" th:field="*{id}">
                 <div class="form-group">
                     <label>Name</label>
-                    <label for="name">Name</label><input th:field="*{name}" type="text" class="form-control" id="name" name="productName"
-                                                     placeholder="Enter product name">
+                    <input th:field="*{name}" type="text" class="form-control" id="name" name="productName" placeholder="Enter product name">
+                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                     <label>Price</label>
-                    <label for="price">Price</label><input th:field="*{price}" type="number" class="form-control" id="price" name="productPrice"
-                                                      placeholder="Enter product price">
+                    <input th:field="*{price}" type="number" class="form-control" id="price" name="productPrice" placeholder="Enter product price">
                     <label>Description</label>
-                    <label for="description">Description</label><input th:field="*{description}" type="text" class="form-control" id="description"
-                                                            name="productDescription" placeholder="Enter product description">
+                    <input th:field="*{description}" type="text" class="form-control" id="description" name="productDescription" placeholder="Enter product description">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
