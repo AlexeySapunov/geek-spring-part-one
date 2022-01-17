@@ -20,9 +20,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @PostConstruct
     public void init() {
-        this.save(new Product(1L, "Product 1", new BigDecimal("001.00"), "description1"));
-        this.save(new Product(2L, "Product 2", new BigDecimal("002.00"), "description2"));
-        this.save(new Product(3L, "Product 3", new BigDecimal("003.00"), "description3"));
+        this.save(new Product(null, "Product 1", new BigDecimal("001.00"), "description1"));
+        this.save(new Product(null, "Product 2", new BigDecimal("002.00"), "description2"));
+        this.save(new Product(null, "Product 3", new BigDecimal("003.00"), "description3"));
     }
 
     @Override
