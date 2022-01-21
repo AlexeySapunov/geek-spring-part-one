@@ -19,5 +19,9 @@
 
         <mapping class="ru.geekbrains.entity.User"/>
         <mapping class="ru.geekbrains.entity.Contact"/>
+        <mapping class="ru.geekbrains.entity.Role"/>
+        <mapping class="ru.geekbrains.entity.Product"/>
+        <mapping class="ru.geekbrains.entity.Customer"/>
+        <mapping class="ru.geekbrains.entity.Attitude"/>
     </session-factory>
 </hibernate-configuration>

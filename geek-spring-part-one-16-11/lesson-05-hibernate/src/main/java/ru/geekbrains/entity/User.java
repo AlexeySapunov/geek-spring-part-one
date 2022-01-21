@@ -2,6 +2,7 @@ package ru.geekbrains.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -17,13 +18,25 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
     private List<Contact> contacts;
 
-    public User(Long id, String username, String password) {
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    private Customer customer;
+
+    public User(Long id, String username, String password, UserType userType) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.userType = userType;
     }
 
     public User() {
@@ -61,12 +74,37 @@ public class User {
         this.contacts = contacts;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", contacts=" + contacts +
                 '}';
     }
 }

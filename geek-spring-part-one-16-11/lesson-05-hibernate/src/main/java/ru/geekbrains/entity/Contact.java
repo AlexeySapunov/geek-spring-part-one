@@ -20,13 +20,14 @@ public class Contact {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Contact(Long id, String type, String contactText) {
+    public Contact() {
+    }
+
+    public Contact(Long id, String type, String contactText, User user) {
         this.id = id;
         this.type = type;
         this.contactText = contactText;
-    }
-
-    public Contact() {
+        this.user = user;
     }
 
     public Long getId() {
@@ -59,5 +60,15 @@ public class Contact {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", contactText='" + contactText + '\'' +
+                ", userId=" + user.getId() +
+                '}';
     }
 }
