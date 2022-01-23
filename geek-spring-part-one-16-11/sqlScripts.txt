@@ -1,0 +1,110 @@
+Hibernate:
+
+    create table attitudes (
+       id bigint not null auto_increment,
+        number integer,
+        price decimal(19,2),
+        customer_id bigint,
+        product_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    create table contacts (
+       id bigint not null auto_increment,
+        contactText varchar(512) not null,
+        type varchar(255) not null,
+        user_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    create table customers (
+       id bigint not null auto_increment,
+        user_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    create table products (
+       id bigint not null auto_increment,
+        name varchar(255) not null,
+        price decimal(19,2),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    create table roles (
+       id bigint not null auto_increment,
+        name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    create table roles_users (
+       roles_id bigint not null,
+        users_id bigint not null
+    ) engine=InnoDB
+Hibernate:
+
+    create table users (
+       id bigint not null auto_increment,
+        password varchar(255) not null,
+        userType varchar(255),
+        username varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate:
+
+    alter table roles
+       drop index UK_ofx66keruapi6vyqpv6f2or37
+Hibernate:
+
+    alter table roles
+       add constraint UK_ofx66keruapi6vyqpv6f2or37 unique (name)
+Hibernate:
+
+    alter table users
+       drop index UK_r43af9ap4edm43mmtq01oddj6
+Hibernate:
+
+    alter table users
+       add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username)
+Hibernate:
+
+    alter table attitudes
+       add constraint FK9tsuqvoimu7qjtcuqi7j33u5s
+       foreign key (customer_id)
+       references customers (id)
+Hibernate:
+
+    alter table attitudes
+       add constraint FKo8a76plba33yilv8p2fgj3u7e
+       foreign key (product_id)
+       references products (id)
+Hibernate:
+
+    alter table contacts
+       add constraint FKna8bddygr3l3kq1imghgcskt8
+       foreign key (user_id)
+       references users (id)
+Hibernate:
+
+    alter table customers
+       add constraint FKrh1g1a20omjmn6kurd35o3eit
+       foreign key (user_id)
+       references users (id)
+Hibernate:
+
+    alter table roles_users
+       add constraint FK4glr8k8swy5nti6n5x35ofucj
+       foreign key (users_id)
+       references users (id)
+Hibernate:
+
+    alter table roles_users
+       add constraint FK2mck5s7km22t2on8h2jpn44xq
+       foreign key (roles_id)
+       references roles (id)
+
+Process finished with exit code 0
