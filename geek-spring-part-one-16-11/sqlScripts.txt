@@ -108,3 +108,38 @@ Hibernate:
        references roles (id)
 
 Process finished with exit code 0
+
+Hibernate:
+    select
+        product2_.id as id1_3_,
+        product2_.name as name2_3_,
+        product2_.price as price3_3_
+    from
+        customers customer0_
+    inner join
+        attitudes attitudes1_
+            on customer0_.id=attitudes1_.customer_id
+    inner join
+        products product2_
+            on attitudes1_.product_id=product2_.id
+    where
+        customer0_.id=?
+
+Process finished with exit code 0
+
+Hibernate:
+    select
+        customer2_.id as id1_2_,
+        customer2_.user_id as user_id2_2_
+    from
+        products product0_
+    inner join
+        attitudes attitudes1_
+            on product0_.id=attitudes1_.product_id
+    inner join
+        customers customer2_
+            on attitudes1_.customer_id=customer2_.id
+    where
+        product0_.id=?
+
+Process finished with exit code 0
