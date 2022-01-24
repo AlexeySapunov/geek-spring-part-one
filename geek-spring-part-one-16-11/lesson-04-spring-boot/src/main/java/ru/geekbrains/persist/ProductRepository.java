@@ -7,11 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-//    List<Product> findProductByNameLike(String pattern);
+    List<Product> findProductByNameLike(String pattern);
 
     @Query("select p " +
             "from Product p " +

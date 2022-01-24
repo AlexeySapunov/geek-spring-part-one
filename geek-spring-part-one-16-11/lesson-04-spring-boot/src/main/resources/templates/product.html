@@ -45,9 +45,19 @@
                        name="nameFilter" id="name-filter" placeholder="Name filter">
             </div>
             <div class="form-group mx-sm-3 mb-2">
-                <label for="price-filter" class="sr-only">Price filter:</label>
-                <input th:value="${param.priceFilter}" type="number" class="form-control"
-                       name="priceFilter" id="price-filter" placeholder="Price filter">
+                <label for="minPrice-filter" class="sr-only">MinPrice filter:</label>
+                <input th:value="${param.minPriceFilter}" type="number" class="form-control"
+                       name="minPriceFilter" id="minPrice-filter" placeholder="MinPrice filter">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="maxPrice-filter" class="sr-only">MaxPrice filter:</label>
+                <input th:value="${param.maxPriceFilter}" type="number" class="form-control"
+                       name="maxPriceFilter" id="maxPrice-filter" placeholder="MaxPrice filter">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="minMaxPrice-filter" class="sr-only">MinMaxPrice filter:</label>
+                <input th:value="${param.minMaxPriceFilter}" type="number" class="form-control"
+                       name="minMaxPriceFilter" id="minMaxPrice-filter" placeholder="MinMaxPrice filter">
             </div>
             <button type="submit" class="btn btn-primary mb-2">Apply</button>
         </form>
