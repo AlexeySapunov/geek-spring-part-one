@@ -1,17 +1,28 @@
 package ru.geekbrains.persist;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "products")
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
+    @Column(nullable = false)
     private String name;
 
+    @PositiveOrZero
+    @Column
     private BigDecimal price;
 
+    @NotBlank
+    @Column
     private String description;
 
     public Product() {
