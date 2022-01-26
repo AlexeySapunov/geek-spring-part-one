@@ -38,6 +38,30 @@
             <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
         </div>
 
+        <form class="form-inline mt-3" method="get">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="name-filter" class="sr-only">Name filter:</label>
+                <input th:value="${param.nameFilter}" type="text" class="form-control"
+                       name="nameFilter" id="name-filter" placeholder="Name filter">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="minPrice-filter" class="sr-only">MinPrice filter:</label>
+                <input th:value="${param.minPriceFilter}" type="number" class="form-control"
+                       name="minPriceFilter" id="minPrice-filter" placeholder="MinPrice filter">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="maxPrice-filter" class="sr-only">MaxPrice filter:</label>
+                <input th:value="${param.maxPriceFilter}" type="number" class="form-control"
+                       name="maxPriceFilter" id="maxPrice-filter" placeholder="MaxPrice filter">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="minMaxPrice-filter" class="sr-only">MinMaxPrice filter:</label>
+                <input th:value="${param.minMaxPriceFilter}" type="number" class="form-control"
+                       name="minMaxPriceFilter" id="minMaxPrice-filter" placeholder="MinMaxPrice filter">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Apply</button>
+        </form>
+
         <div class="col-12">
             <table class="table table-bordered my-2">
                 <thead>
@@ -52,11 +76,12 @@
                 <tbody>
                 <tr th:each="product : ${products}">
                     <th scope="row" th:text="${product.id}">1</th>
-                    <td th:text="${product.name}">product</td>
-                    <td th:number="${product.price}">1.00</td>
-                    <td th:text="${product.description}">description</td>
+                    <td th:text="${product.name}">Alex</td>
+                    <td th:text="${product.price}">Alex</td>
+                    <td th:text="${product.description}">Alex</td>
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-success" th:href="@{/product/{idDel}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>
                     </td>
                 </tr>

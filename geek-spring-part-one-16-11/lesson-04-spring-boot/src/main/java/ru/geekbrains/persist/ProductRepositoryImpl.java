@@ -2,50 +2,44 @@ package ru.geekbrains.persist;
 
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
-public class ProductRepositoryImpl implements ProductRepository {
-
-    private final Map<Long, Product> productMap = new ConcurrentHashMap<>();
-
-    private final AtomicLong identity = new AtomicLong(0);
-
-    @PostConstruct
-    public void init() {
-        this.save(new Product(null, "Product 1", new BigDecimal("00.00"), null));
-        this.save(new Product(null, "Product 2", new BigDecimal("00.00"), null));
-        this.save(new Product(null, "Product 3", new BigDecimal("00.00"), null));
-    }
-
-    @Override
-    public List<Product> findAll() {
-        return new ArrayList<>(productMap.values());
-    }
-
-    @Override
-    public Optional<Product> findById(long id) {
-        return Optional.ofNullable(productMap.get(id));
-    }
-
-    @Override
-    public void save(Product product) {
-        if (product.getId() == null) {
-            long id = identity.incrementAndGet();
-            product.setId(id);
-        }
-        productMap.put(product.getId(), product);
-    }
-
-    @Override
-    public void delete(long id) {
-        productMap.remove(id);
-    }
-}
+//@Repository
+//public class ProductRepositoryImpl implements ProductRepository {
+//
+//    @PersistenceContext
+//    private EntityManager em;
+//
+//    @Override
+//    public List<Product> findAll() {
+//        return em.createQuery("select p from Product p", Product.class)
+//                .getResultList();
+//    }
+//
+//    @Override
+//    public Optional<Product> findById(long id) {
+//        return Optional.ofNullable(em.find(Product.class, id));
+//    }
+//
+//    @Override
+//    @Transactional
+//    public Product save(Product product) {
+//        if (product.getId() == null) {
+//            em.persist(product);
+//            return product;
+//        }
+//        return em.merge(product);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void delete(long id) {
+//        em.createQuery("delete from Product p where p.id = :id")
+//                .setParameter("id", id)
+//                .executeUpdate();
+//    }
+//}

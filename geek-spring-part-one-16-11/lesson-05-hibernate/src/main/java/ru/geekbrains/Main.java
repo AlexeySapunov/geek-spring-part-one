@@ -1,9 +1,14 @@
 package ru.geekbrains;
 
 import org.hibernate.cfg.Configuration;
+import ru.geekbrains.entity.Customer;
+import ru.geekbrains.entity.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -19,16 +24,27 @@ public class Main {
 //                        "from Customer c " +
 //                        "join c.attitudes at " +
 //                        "join at.product p " +
-//                        "where c.id = :customerId")
+//                        "where c.id = :customerId and " +
+//                        "p.price >= :minPrice and " +
+//                        "p.price <= :maxPrice")
 //                .setParameter("customerId", 1L)
+//                .setParameter("minPrice", 100)
+//                .setParameter("maxPrice", 1000)
 //                .getResultList();
 
-        em.createQuery("select c " +
-                        "from Product p " +
-                        "join p.attitudes at " +
-                        "join at.customer c " +
-                        "where p.id = :productId")
-                .setParameter("productId", 1L)
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Product> query = cb.createQuery(Product.class);
+        Root<Customer> root = query.from(Customer.class);
+
+        Join<Object, Object> attitudes = root.join("attitudes", JoinType.INNER);
+        Join<Object, Object> products = attitudes.join("product", JoinType.INNER);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get("id"), 1L));
+        predicates.add(cb.ge(products.get("price"), 100));
+        predicates.add(cb.le(products.get("price"), 1000));
+
+        List<Product> product = em.createQuery(query.select(attitudes.get("product")).where(predicates.toArray(new Predicate[0])))
                 .getResultList();
 
         em.close();
