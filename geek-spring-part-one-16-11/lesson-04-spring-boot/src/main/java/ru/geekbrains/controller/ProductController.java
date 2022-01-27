@@ -8,91 +8,76 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.persist.Product;
-import ru.geekbrains.persist.ProductRepository;
+import ru.geekbrains.persist.CategoryRepository;
+import ru.geekbrains.service.ProductService;
+import ru.geekbrains.service.dto.ProductDto;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductRepository productRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
+    private final ProductService productService;
+
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductController(ProductService productService, CategoryRepository categoryRepository) {
+        this.productService = productService;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping
     public String listPage(Model model,
                            @RequestParam("nameFilter") Optional<String> nameFilter,
-                           @RequestParam("minPriceFilter") Optional<BigDecimal> minPriceFilter,
-                           @RequestParam("maxPriceFilter") Optional<BigDecimal> maxPriceFilter,
-                           @RequestParam("minMaxPriceFilter") Optional<BigDecimal> minMaxPriceFilter) {
+                           @RequestParam("page") Optional<Integer> page,
+                           @RequestParam("size") Optional<Integer> size,
+                           @RequestParam("sort") Optional<String> sort) {
         logger.info("Product filter with name pattern {}", nameFilter.orElse(null));
-        logger.info("Product filter with min price {}", minPriceFilter.orElse(null));
-        logger.info("Product filter with max price {}", maxPriceFilter.orElse(null));
-        logger.info("Product filter with min between max price {}", minMaxPriceFilter.orElse(null));
 
-//        Specification<Product> spec = Specification.where(null);
-//        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-//            spec.and(ProductSpecification.nameLike(nameFilter.get()));
-//        } else if (minPriceFilter.isPresent()) {
-//            spec.and(ProductSpecification.minPriceFilter(minPriceFilter.get()));
-//        } else if (maxPriceFilter.isPresent()) {
-//            spec.and(ProductSpecification.maxPriceFilter(maxPriceFilter.get()));
-//        } else
-//            minMaxPriceFilter.ifPresent(bigDecimal -> spec.and(ProductSpecification.minMaxPriceFilter(bigDecimal, bigDecimal)));
-
-        List<Product> products;
-
-        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-            products = productRepository.findProductByNameLike("%" + nameFilter.get() + "%");
-        } else if (minPriceFilter.isPresent() || maxPriceFilter.isPresent() || minMaxPriceFilter.isPresent() || nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-            products = productRepository.findByFilter("%" + nameFilter.get() + "%", minPriceFilter.get(), maxPriceFilter.get());
-        } else {
-            products = productRepository.findAll();
-        }
-
-//        model.addAttribute("products", productRepository.findAll(spec));
-        model.addAttribute("products", products);
+        model.addAttribute("products", productService.findAll(
+                nameFilter,
+                page.orElse(1) - 1,
+                size.orElse(5),
+                sort.orElse("id")
+        ));
         return "product";
     }
 
     @GetMapping("/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("product", productRepository.findById(id)
+        model.addAttribute("product", productService.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found")));
+        model.addAttribute("categories", categoryRepository.findAll());
         return "product_form";
     }
 
     @GetMapping("/new")
     public String create(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductDto());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "product_form";
     }
 
     @PostMapping
-    public String save(@Valid Product product, BindingResult result) {
+    public String save(@Valid ProductDto product, BindingResult result) {
         if (result.hasErrors()) {
             return "product_form";
         }
-        productRepository.save(product);
+        productService.save(product);
         return "redirect:/product";
     }
 
-    @GetMapping("/{idDel}")
-    public String delete(@PathVariable("idDel") Long idDel, @Valid Product product) {
-        if (product != null) {
-            productRepository.deleteById(idDel);
-        }
-        return "product_form";
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+
+        productService.deleteById(id);
+
+        return "redirect:/product";
     }
 
     @ExceptionHandler
