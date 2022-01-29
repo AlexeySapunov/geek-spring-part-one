@@ -1,0 +1,34 @@
+GET http://localhost:8080/mvc-app/api/v1/product
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/product/17
+
+###
+
+POST http://localhost:8080/mvc-app/api/v1/product
+Content-Type: application/json
+
+{
+  "name": "dhsfgjjy",
+  "price": 1335346.00,
+  "description": "vzdbn",
+  "categoryId": 3
+}
+
+###
+
+PUT http://localhost:8080/mvc-app/api/v1/product
+Content-Type: application/json
+
+{
+  "id": 17,
+  "name": "dhsf fgdfh gjjy",
+  "price": 1335346.00,
+  "description": "vzdbn",
+  "categoryId": 3
+}
+
+###
+
+DELETE http://localhost:8080/mvc-app/api/v1/product/17
