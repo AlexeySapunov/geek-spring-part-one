@@ -1,0 +1,33 @@
+<div class="row py-2">
+  <div class="col-12">
+    <a class="btn btn-primary" routerLink="/product/new">Add Product</a>
+  </div>
+
+  <div class="col-12">
+    <table class="table table-bordered my-2">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let prod of products">
+        <th scope="row">{{prod.id}}</th>
+        <td>{{prod.name}}</td>
+        <td>{{prod.description}}</td>
+        <td>{{prod.categoryName}}</td>
+        <td>{{prod.price}}</td>
+        <td>
+          <a class="btn btn-success" routerLink="/product/{{prod.id}}"><i class="fas fa-edit"></i></a>
+          <a class="btn btn-danger" (click)="delete(prod.id)"><i class="far fa-trash-alt"></i></a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
