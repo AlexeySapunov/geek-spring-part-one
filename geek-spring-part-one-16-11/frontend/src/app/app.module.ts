@@ -9,6 +9,8 @@ import { ProductListComponent } from './product-list/product-list.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { ProductFormComponent } from './product-form/product-form.component';
+import {UserListComponent} from "./user-list/user-list.component";
+import {UserFormComponent} from "./user-form/user-form.component.ts ";
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ProductFormComponent } from './product-form/product-form.component';
     HeaderComponent,
     FooterComponent,
     ProductListComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    UserFormComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,

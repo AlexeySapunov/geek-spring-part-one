@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:replace="fragments/header.html :: head">
 </head>
@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="row py-2">
-        <div class="col-12">
+        <div class="col-12" sec:authorize="hasAnyRole('ADMIN','MANAGER')">
             <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
         </div>
 
@@ -22,6 +22,24 @@
                        name="nameFilter" id="name-filter" placeholder="Name filter">
             </div>
 
+            <button type="submit" class="btn btn-primary mb-2">Apply</button>
+        </form>
+
+        <form class="form-inline mt-3" method="get" th:action="@{/product/min}">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="minPrice" class="sr-only">Min price:</label>
+                <input th:value="${param.minPrice}" type="text" class="form-control"
+                       name="minPrice" id="minPrice" placeholder="Min Price">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Apply</button>
+        </form>
+
+        <form class="form-inline mt-3" method="get" th:action="@{/product/max}">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="maxPrice" class="sr-only">Max price:</label>
+                <input th:value="${param.maxPrice}" type="text" class="form-control"
+                       name="maxPrice" id="maxPrice" placeholder="Max price">
+            </div>
             <button type="submit" class="btn btn-primary mb-2">Apply</button>
         </form>
 
@@ -46,7 +64,7 @@
                     <td th:text="${product.description}">Alex</td>
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
-                        <form class="d-inline" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
+                        <form class="d-inline" sec:authorize="hasAnyRole('ADMIN','MANAGER')" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </td>
