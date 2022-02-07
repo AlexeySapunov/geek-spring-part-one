@@ -48,6 +48,33 @@ public class ProductController {
         return "product";
     }
 
+    //        @GetMapping("/min")
+//        public String minPrice(Model model,
+//                               @RequestParam("minPrice") BigDecimal minPrice) {
+//
+//
+//            Specification<ProductDto> spec = Specification.where(null);
+//            if (minPrice != null) {
+//                spec = spec.and(ProductSpecification.minPriceFilter(minPrice));
+//            }
+//
+//           // model.addAttribute("products", productService.findAll(spec));
+//            return "product";
+//        }
+//        @GetMapping("/max")
+//        public String maxPrice(Model model,
+//                               @RequestParam("maxPrice") BigDecimal maxPrice) {
+//
+//            Specification<ProductDto> spec = Specification.where(null);
+//            if (maxPrice != null) {
+//                spec = spec.and(ProductSpecification.minPriceFilter(maxPrice));
+//            } else {
+//
+//                model.addAttribute("products", categoryRepository.findAll(spec)).;
+//                return "product";
+//            }
+//        }
+
     @GetMapping("/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productService.findById(id)
