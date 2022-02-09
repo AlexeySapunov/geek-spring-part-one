@@ -3,6 +3,7 @@ package ru.geekbrains.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.service.ProductService;
@@ -34,11 +35,13 @@ public class ProductResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/{id}")
     public ProductDto findOne(@PathVariable("id") Long id) {
         return productService.findById(id).orElseThrow(() -> new NotFoundException("Product with id " + id + " no found"));
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto create(@RequestBody ProductDto productDto) {
@@ -48,6 +51,7 @@ public class ProductResource {
         return productService.save(productDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PutMapping
     public ProductDto update(@RequestBody ProductDto productDto) {
         if (productDto.getId() == null) {
@@ -56,6 +60,7 @@ public class ProductResource {
         return productService.save(productDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         productService.deleteById(id);

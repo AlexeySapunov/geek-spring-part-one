@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,19 +30,24 @@ public class UserController {
     private final RoleRepository roleRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, PasswordEncoder encoder, RoleRepository roleRepository) {
+    public UserController(UserRepository userRepository,
+                          PasswordEncoder encoder,
+                          RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.roleRepository = roleRepository;
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping
-    public String listPage(Model model) {
+    public String listPage(Model model, Authentication auth) {
+        logger.info("Current user {}", auth.getName());
 
         model.addAttribute("users", userRepository.findAll());
         return "user";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("roles", roleRepository.findAll());
@@ -49,12 +56,15 @@ public class UserController {
         return "user_form";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/new")
     public String create(Model model) {
+        model.addAttribute("roles", roleRepository.findAll());
         model.addAttribute("user", new User());
         return "user_form";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PostMapping
     public String save(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
@@ -65,11 +75,10 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @Secured("ROLE_SUPER_ADMIN")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-
         userRepository.deleteById(id);
-
         return "redirect:/user";
     }
 
