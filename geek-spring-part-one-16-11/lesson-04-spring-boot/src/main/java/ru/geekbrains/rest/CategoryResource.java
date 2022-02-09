@@ -3,6 +3,7 @@ package ru.geekbrains.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.service.CategoryService;
@@ -33,11 +34,13 @@ public class CategoryResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/{id}")
     public CategoryDto findOne(@PathVariable("id") Long id) {
         return categoryService.findById(id).orElseThrow(() -> new NotFoundException("Category with id " + id + " no found"));
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto create(@RequestBody CategoryDto categoryDto) {
@@ -47,6 +50,7 @@ public class CategoryResource {
         return categoryService.save(categoryDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PutMapping
     public CategoryDto update(@RequestBody CategoryDto categoryDto) {
         if (categoryDto.getId() == null) {
@@ -55,6 +59,7 @@ public class CategoryResource {
         return categoryService.save(categoryDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         categoryService.deleteById(id);

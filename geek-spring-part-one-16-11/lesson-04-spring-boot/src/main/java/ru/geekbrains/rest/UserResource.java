@@ -3,6 +3,7 @@ package ru.geekbrains.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.service.UserService;
@@ -33,6 +34,7 @@ public class UserResource {
                 sort.filter(s -> !s.isBlank()).orElse("id"));
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/{id}")
     public  UserDto findOne(@PathVariable("id") Long id){
         return userService.findById(id)
@@ -40,6 +42,7 @@ public class UserResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@RequestBody UserDto userDto){
@@ -49,6 +52,7 @@ public class UserResource {
         return userService.save(userDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PutMapping
     public UserDto update(@RequestBody UserDto userDto){
         if(userDto.getId() == null){
@@ -58,6 +62,7 @@ public class UserResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         userService.deleteById(id);

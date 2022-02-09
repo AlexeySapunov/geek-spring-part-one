@@ -3,6 +3,7 @@ package ru.geekbrains.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.service.RoleService;
@@ -33,6 +34,7 @@ public class RoleResource {
                 sort.filter(s -> !s.isBlank()).orElse("id"));
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @GetMapping("/{id}")
     public  RoleDto findOne(@PathVariable("id") Long id){
         return roleService.findById(id)
@@ -40,6 +42,7 @@ public class RoleResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RoleDto create(@RequestBody RoleDto roleDto){
@@ -49,6 +52,7 @@ public class RoleResource {
         return roleService.save(roleDto);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @PutMapping
     public RoleDto update(@RequestBody RoleDto roleDto){
         if(roleDto.getId() == null){
@@ -58,6 +62,7 @@ public class RoleResource {
 
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         roleService.deleteById(id);
